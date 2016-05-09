@@ -5,15 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
-public class Episode3Menu extends AppCompatActivity {
+public class Ep3MainActivity extends AppCompatActivity {
     Intent i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_episode3_menu);
+        setContentView(R.layout.activity_ep3_main);
     }
-    public void gotoEp3MainActivity(View v){
-        i = new Intent(this, Ep3MainActivity.class);
+    public void gotoCredits(View v){
+        i = new Intent(this, Credits.class);
+    }
+    public void gotoGameOver(View v){
+        i = new Intent(this, GameOver.class);
     }
 }

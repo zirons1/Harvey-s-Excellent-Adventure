@@ -19,7 +19,11 @@
         <activity android:name=".Episode1Menu" />
         <activity android:name=".Episode2Menu" />
         <activity android:name=".Episode3Menu" />
-        <activity android:name=".Ep1MainActivity"></activity>
+        <activity android:name=".Ep1MainActivity" />
+        <activity android:name=".Ep2MainActivity" />
+        <activity android:name=".Ep3MainActivity" />
+        <activity android:name=".Credits" />
+        <activity android:name=".GameOver"></activity>
     </application>
 
 </manifest>
