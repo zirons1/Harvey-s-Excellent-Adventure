@@ -18,7 +18,8 @@
         <activity android:name=".MainMenu" />
         <activity android:name=".Episode1Menu" />
         <activity android:name=".Episode2Menu" />
-        <activity android:name=".Episode3Menu"></activity>
+        <activity android:name=".Episode3Menu" />
+        <activity android:name=".Ep1MainActivity"></activity>
     </application>
 
 </manifest>

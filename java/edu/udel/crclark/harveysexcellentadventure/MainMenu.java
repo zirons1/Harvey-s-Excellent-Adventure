@@ -19,15 +19,15 @@ public class MainMenu extends AppCompatActivity {
         b4 = (Button) findViewById(R.id.button4);
     }
 
-    public void gotoEp1(View v){
+    public void gotoEp1Menu(View v){
         i2 = new Intent(this, Episode1Menu.class);
         startActivity(i2);
     }
-    public void gotoEp2(View v){
+    public void gotoEp2Menu(View v){
         i3 = new Intent(this, Episode2Menu.class);
         startActivity(i3);
     }
-    public void gotoEp3(View v){
+    public void gotoEp3Menu(View v){
         i4 = new Intent(this, Episode3Menu.class);
         startActivity(i4);
     }

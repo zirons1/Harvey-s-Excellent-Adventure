@@ -12,18 +12,18 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Episode 2"
+        android:text="Episode 2: \n The Search for the Chalk"
         android:id="@+id/button3"
-        android:onClick="gotoEp2"
+        android:onClick="gotoEp2Menu"
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Episode 1"
+        android:text="Episode 1: \n Quest for the Coffee"
         android:id="@+id/button2"
-        android:onClick="gotoEp1"
+        android:onClick="gotoEp1Menu"
         android:layout_above="@+id/button3"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="58dp" />
@@ -31,10 +31,11 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Episode 3"
+        android:text="Episode 3: \n Walking the Dog"
         android:id="@+id/button4"
-        android:onClick="gotoEp3"
+        android:onClick="gotoEp3Menu"
         android:layout_below="@+id/button3"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="58dp" />
+
 </RelativeLayout>
