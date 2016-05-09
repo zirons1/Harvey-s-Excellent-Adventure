@@ -7,16 +7,14 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="edu.udel.crclark.harveysexcellentadventure.TitleScreen">
+    tools:context="edu.udel.crclark.harveysexcellentadventure.Episode3Menu">
 
-    <Button
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Start"
-        android:id="@+id/button"
-        android:onClick="onClick"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="70dp"
-        android:layout_centerVertical="true" />
-
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Episode 3"
+        android:id="@+id/textView"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 </RelativeLayout>

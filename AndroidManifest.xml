@@ -15,6 +15,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainMenu" />
+        <activity android:name=".Episode1Menu" />
+        <activity android:name=".Episode2Menu" />
+        <activity android:name=".Episode3Menu"></activity>
     </application>
 
 </manifest>
