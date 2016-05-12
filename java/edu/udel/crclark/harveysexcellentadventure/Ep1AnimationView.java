@@ -9,7 +9,12 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Ep1AnimationView extends View{
+    Ep1MainActivity context;
+
     int width;
     int height;
     private float xLoc = 0;
@@ -28,13 +33,21 @@ public class Ep1AnimationView extends View{
     final int MIN_HEIGHT = 0;
     final int MAX_WIDTH = 1000;
     final int MIN_WIDTH = 0;
+
+    private double counter = 0;
     private float yPosition; //position in my model world
     private float xPosition;
+    private float yLocation;
     private float height_scale; //how to convert from model to screen
     private float width_scale;
     private int circleRadius;
+    private Bitmap bm,b;
+    private Bitmap[] skins;
+    private Integer score;
+    private ArrayList<CrowdMember> crowd, toBeRemoved;
+    private Random rand;
+    private Boolean recentlyIncreased, gameOver=false;
 
-    Bitmap bm,b;
 
     public Ep1AnimationView(Context context){
         super(context);
@@ -58,9 +71,11 @@ public class Ep1AnimationView extends View{
         acceleration = .15F;
         lastDrawTime = 0;
         total_elapsed = 0;
-        yVelocity = 0.000F; //should start at zero when dropped
+        yVelocity = 0.450F;
         xVelocity = 0.000F;
         direction_factor = 1;
+
+        this.context = (Ep1MainActivity) context;
     }
 
     private void initialize(){
@@ -74,6 +89,21 @@ public class Ep1AnimationView extends View{
         xLoc = width/2;
         yPosition = (int)(.85 * MAX_HEIGHT);
         xPosition = (int)(.5 * MAX_WIDTH);
+
+        score = 0;
+        skins = new Bitmap[6];
+        skins[0] = BitmapFactory.decodeResource(getResources(), R.drawable.line1);
+        skins[1] = BitmapFactory.decodeResource(getResources(), R.drawable.line2);
+        skins[2] = BitmapFactory.decodeResource(getResources(), R.drawable.line3);
+        skins[3] = BitmapFactory.decodeResource(getResources(), R.drawable.line4);
+        skins[4] = BitmapFactory.decodeResource(getResources(), R.drawable.line5);
+        skins[5] = BitmapFactory.decodeResource(getResources(), R.drawable.line6);
+        recentlyIncreased = false;
+
+        crowd = new ArrayList<>();
+        toBeRemoved = new ArrayList<>();
+        crowd.add(new CrowdMember(skins[0], 250));
+        rand = new Random();
     }
 
     @Override
@@ -82,29 +112,75 @@ public class Ep1AnimationView extends View{
      */
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        if(!gameOver) {
+            if (first_time)
+                initialize();
 
-        if (first_time)
-            initialize();
+            long elapsed = System.currentTimeMillis() - lastDrawTime;
 
-        long elapsed = System.currentTimeMillis() - lastDrawTime;
+            if (elapsed > TIME_PER_FRAME) {
+                counter += 1;
+                System.out.println("xPOS: " + xPosition + " yPOS: " + yPosition + " Score: " + score + " Vel: " + yVelocity);
+                lastDrawTime = System.currentTimeMillis();
 
-        if (elapsed > TIME_PER_FRAME){
+                //makes every crowd member drop at velocity yVelocity
+                for (CrowdMember c : crowd) {
+                    c.yLocation += yVelocity * elapsed;
+                }
+                //spawns new crowd members based on player location
+                if (xPosition == 500 && counter % 30 == 0) //gives first spawn a bit of buffer time
+                    crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 500));
 
-            System.out.println("xPOS: " + xPosition + " yPOS: " + yPosition + " TOTAL_ELAPSED: " + total_elapsed);
-            lastDrawTime = System.currentTimeMillis();
+                if (xPosition == 250 && counter % 20 == 0)
+                    crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 250));
+
+                if (xPosition == 750 && counter % 20 == 0)
+                    crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 750));
+
+                //increase difficulty as score increases
+                if (score % 10 == 0 && !recentlyIncreased) {
+                    yVelocity += .05;
+                    //prevents difficulty from increasing more than once per each score milestone
+                    recentlyIncreased = true;
+                }
+
+            }
+            yLoc = height_scale * yPosition;
+            xLoc = width_scale * xPosition;
+            drawScore(canvas);
+            drawHarvey(canvas);
+            for (CrowdMember c : crowd) {
+                drawCrowd(canvas, c);
+                if (c.yLocation > 1050) {
+                    toBeRemoved.add(c);
+                }
+                //collision detection
+                if (c.xLocation == xPosition && c.yLocation > (yPosition - (b.getHeight() / 2)) && c.yLocation < 950) {
+                    gameOver = true;
+                    yVelocity = 0;
+                    System.out.println("---------- COLLISION!!! -------------");
+                    context.gotoGameOver(score);
+                }
+            }
+            for (CrowdMember c : toBeRemoved) {
+                score += 1;
+                recentlyIncreased = false;
+                crowd.remove(c);
+            }
+            toBeRemoved.clear();
+            //drawCircle(canvas);
+            this.invalidate();
         }
-        yLoc = height_scale * yPosition;
-        xLoc = width_scale * xPosition;
-        drawHarvey(canvas);
-        //drawCircle(canvas);
-        this.invalidate();
-
     }
     private void drawHarvey(Canvas canvas){
         bm = BitmapFactory.decodeResource(getResources(), R.drawable.harvey);
-        b = Bitmap.createScaledBitmap(bm, bm.getWidth()*3, bm.getHeight()*3, true);
+        b = Bitmap.createScaledBitmap(bm, bm.getWidth() * 3, bm.getHeight() * 3, true);
         Paint harveyPaint = new Paint();
-        canvas.drawBitmap(b, xLoc - (b.getWidth()/2), yLoc, harveyPaint);
+        canvas.drawBitmap(b, xLoc - (b.getWidth() / 2), yLoc, harveyPaint);
+    }
+    private void drawCrowd(Canvas canvas, CrowdMember member) {
+        Paint crowdPaint = new Paint();
+        canvas.drawBitmap(member.bitmap, member.xLocation*width_scale - (member.bitmap.getWidth()/2), member.yLocation*height_scale, crowdPaint);
     }
 
     private void drawCircle(Canvas canvas) {
@@ -114,20 +190,14 @@ public class Ep1AnimationView extends View{
         circlePaint.setStyle(Paint.Style.FILL_AND_STROKE);
         circlePaint.setAntiAlias(true);
 
-        canvas.drawCircle(xLoc, yLoc, circleRadius, circlePaint);
+        canvas.drawCircle(xLoc, (int) (height_scale * .85 * MAX_HEIGHT), circleRadius, circlePaint);
     }
+    private void drawScore(Canvas canvas) {
+        Paint scorePaint = new Paint();
+        scorePaint.setTextSize(200);
 
-//    private void drawCircle(Canvas canvas) {
-//        Paint circlePaint = new Paint();
-//        circlePaint.setColor(Color.CYAN);
-//        circlePaint.setStrokeWidth(4);
-//        circlePaint.setStyle(Paint.Style.FILL_AND_STROKE);
-//        circlePaint.setAntiAlias(true);
-//
-//        canvas.drawCircle(xLoc, yLoc, circleRadius, circlePaint);
-//    }
-
-
+        canvas.drawText(score.toString(), 50, 200, scorePaint);
+    }
     /**
      * This method is called by the Android platform when the app window size changes.
      * We store the initial setting of these so that we can compute the exact locations
@@ -139,16 +209,11 @@ public class Ep1AnimationView extends View{
         width = w;
         height = h;
     }
-    public float getxVelocity(){
-        return xVelocity;
-    }
-    public void setxVelocity(float f){
-        xVelocity = f;
-    }
-    public float getxPosition(){
-        return xPosition;
-    }
-    public void setxPosition(float f) {
-        xPosition = f;
-    }
+    public float getxVelocity(){ return xVelocity; }
+    public void setxVelocity(float f){ xVelocity = f; }
+    public float getxPosition(){ return xPosition; }
+    public void setxPosition(float f) { xPosition = f; }
+    public Integer getScore() { return score; }
+    public long getClock() { return System.currentTimeMillis(); }
+    public Boolean getGameOver(){ return gameOver; }
 }

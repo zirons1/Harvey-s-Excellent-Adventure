@@ -7,10 +7,10 @@ import android.view.View;
 import android.widget.Button;
 
 public class Ep1MainActivity extends AppCompatActivity {
-    Intent i;
     Button br, bl;
     edu.udel.crclark.harveysexcellentadventure.Ep1AnimationView am;
     float xPosition;
+    Intent i;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,11 +20,6 @@ public class Ep1MainActivity extends AppCompatActivity {
         am = (edu.udel.crclark.harveysexcellentadventure.Ep1AnimationView) findViewById(R.id.view);
         br = (Button) findViewById(R.id.button2);
         bl = (Button) findViewById(R.id.button);
-    }
-    public void gotoCredits(View v){
-        i = new Intent(this, Credits.class);
-    }
-    public void gotoGameOver(View v){
         i = new Intent(this, GameOver.class);
     }
     public void onClickRight(View v){
@@ -36,5 +31,9 @@ public class Ep1MainActivity extends AppCompatActivity {
         xPosition = am.getxPosition();
         if (xPosition > 250)
             am.setxPosition(xPosition - 250);
+    }
+    public void gotoGameOver(int score){
+        i.putExtra("Score", score);
+        startActivity(i);
     }
 }
