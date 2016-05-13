@@ -71,7 +71,7 @@ public class Ep1AnimationView extends View{
         acceleration = .15F;
         lastDrawTime = 0;
         total_elapsed = 0;
-        yVelocity = 0.450F;
+        yVelocity = 0.600F;
         xVelocity = 0.000F;
         direction_factor = 1;
 
@@ -128,14 +128,23 @@ public class Ep1AnimationView extends View{
                     c.yLocation += yVelocity * elapsed;
                 }
                 //spawns new crowd members based on player location
-                if (xPosition == 500 && counter % 30 == 0) //gives first spawn a bit of buffer time
+                if (xPosition == 500 && counter % 30 == 0) { //gives first spawn a bit of buffer time
                     crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 500));
+                    if (rand.nextInt(2) == 1)
+                        crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 250 + rand.nextInt(2)*500)); //adds other random CrowdMember in another row
+                }
 
-                if (xPosition == 250 && counter % 20 == 0)
+                if (xPosition == 250 && counter % 20 == 0) {
                     crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 250));
+                    if (rand.nextInt(2) == 1)
+                        crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 500 + rand.nextInt(2) * 250)); //adds other random CrowdMember in another row
+                }
 
-                if (xPosition == 750 && counter % 20 == 0)
+                if (xPosition == 750 && counter % 20 == 0) {
                     crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 750));
+                    if (rand.nextInt(2) == 1)
+                        crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 250 + rand.nextInt(2)*250)); //adds other random CrowdMember in another row
+                }
 
                 //increase difficulty as score increases
                 if (score % 10 == 0 && !recentlyIncreased) {
