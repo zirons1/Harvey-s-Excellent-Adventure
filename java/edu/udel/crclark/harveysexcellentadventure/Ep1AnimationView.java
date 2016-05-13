@@ -128,7 +128,7 @@ public class Ep1AnimationView extends View{
                     c.yLocation += yVelocity * elapsed;
                 }
                 //spawns new crowd members based on player location
-                if (xPosition == 500 && counter % 30 == 0) { //gives first spawn a bit of buffer time
+                if (xPosition == 500 && counter % 20 == 0) { //gives first spawn a bit of buffer time
                     crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 500));
                     if (rand.nextInt(2) == 1)
                         crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 250 + rand.nextInt(2)*500)); //adds other random CrowdMember in another row
