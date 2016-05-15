@@ -31,22 +31,10 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dunkin Donuts"
-        android:id="@+id/buttonDD"
-        android:onClick="gotoEp1MainActivityDunkin"
-        android:layout_marginLeft="30dp"
-        android:layout_alignTop="@+id/buttonSB"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/textView" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Starbucks"
-        android:id="@+id/buttonSB"
-        android:onClick="gotoEp1MainActivityStarbucks"
-        android:layout_marginRight="30dp"
+        android:text="Start"
+        android:id="@+id/button"
+        android:onClick="gotoEp1MainActivity"
         android:layout_centerVertical="true"
-        android:layout_alignEnd="@+id/textView2" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

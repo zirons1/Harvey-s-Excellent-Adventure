@@ -13,14 +13,8 @@ public class Episode1Menu extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_episode1_menu);
     }
-    public void gotoEp1MainActivityDunkin(View v){
+    public void gotoEp1MainActivity(View v){
         i = new Intent(this, Ep1MainActivity.class);
-        i.putExtra("colorScheme", "Dunkin Donuts");
-        startActivity(i);
-    }
-    public void gotoEp1MainActivityStarbucks(View v){
-        i = new Intent(this, Ep1MainActivity.class);
-        i.putExtra("colorScheme", "Starbucks");
         startActivity(i);
     }
 }
