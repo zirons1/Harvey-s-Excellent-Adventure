@@ -154,7 +154,6 @@ public class Ep3AnimationView extends View{
             yLoc = height_scale * yPosition;
             xLoc = width_scale * xPosition;
             drawScore(canvas);
-            drawCrowd(canvas, harvey);
             for (CrowdMember c : crowd) {
                 drawCrowd(canvas, c);
                 if (c.xLocation < -150) {
@@ -167,6 +166,8 @@ public class Ep3AnimationView extends View{
                     context.gotoGameOver(score);
                 }
             }
+            drawCrowd(canvas, harvey);
+
             for (CrowdMember c : toBeRemoved) {
                 score += 1;
                 recentlyIncreased = false;
