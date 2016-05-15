@@ -12,7 +12,7 @@ public class GameOver extends AppCompatActivity {
     int score;
     Intent i, i2;
     Bundle extras;
-    String newScore;
+    String newScore, retryGame;
     Button b1,b2;
 
     @Override
@@ -24,6 +24,7 @@ public class GameOver extends AppCompatActivity {
         extras = i.getExtras();
         if (extras != null){
             score = extras.getInt("Score");
+            retryGame = extras.getString("Game");
             newScore = Integer.toString(score);
 
             t = (TextView) findViewById(R.id.textView);
@@ -40,7 +41,17 @@ public class GameOver extends AppCompatActivity {
     }
 
     public void onClickRetry(View v){
-        i2 = new Intent(this, Ep1MainActivity.class);
+        switch (retryGame) {
+            case "Episode 1":
+                i2 = new Intent(this, Ep1MainActivity.class);
+                break;
+            case "Episode 2":
+                i2 = new Intent(this, Ep2MainActivity.class);
+                break;
+            case "Episode 3":
+                i2 = new Intent(this, Ep3MainActivity.class);
+                break;
+        }
         startActivity(i2);
     }
     public void onClickMainMenu(View v){

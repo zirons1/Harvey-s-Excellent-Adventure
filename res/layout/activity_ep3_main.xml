@@ -19,7 +19,7 @@
         android:layout_centerHorizontal="true" />
 
 
-    <edu.udel.crclark.ep3animationtest.Ep3AnimationView
+    <edu.udel.crclark.harveysexcellentadventure.Ep3AnimationView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/view"

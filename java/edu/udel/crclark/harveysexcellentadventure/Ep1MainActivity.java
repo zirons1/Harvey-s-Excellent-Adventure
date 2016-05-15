@@ -34,6 +34,7 @@ public class Ep1MainActivity extends AppCompatActivity {
     }
     public void gotoGameOver(int score){
         i.putExtra("Score", score);
+        i.putExtra("Game", "Episode 1");
         startActivity(i);
     }
 }

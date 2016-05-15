@@ -28,6 +28,7 @@ public class Ep3MainActivity extends AppCompatActivity {
     }
     public void gotoGameOver(int score){
         i.putExtra("Score", score);
+        i.putExtra("Game", "Episode 3");
         startActivity(i);
     }
 }
