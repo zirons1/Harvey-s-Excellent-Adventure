@@ -15,5 +15,6 @@ public class Episode3Menu extends AppCompatActivity {
     }
     public void gotoEp3MainActivity(View v){
         i = new Intent(this, Ep3MainActivity.class);
+        startActivity(i);
     }
 }

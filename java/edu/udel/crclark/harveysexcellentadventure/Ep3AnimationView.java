@@ -12,8 +12,8 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Ep1AnimationView extends View{
-    Ep1MainActivity context;
+public class Ep3AnimationView extends View{
+    Ep3MainActivity context;
 
     int width;
     int height;
@@ -41,24 +41,26 @@ public class Ep1AnimationView extends View{
     private float height_scale; //how to convert from model to screen
     private float width_scale;
     private int circleRadius;
-    private Bitmap bm,b;
-    private Bitmap[] skins;
+    private ArrayList<Bitmap> skins;
     private Integer score;
     private ArrayList<CrowdMember> crowd, toBeRemoved;
     private Random rand;
     private Boolean recentlyIncreased, gameOver=false;
+    private Boolean[] spawnConditions = {false, false, false, false, false};
+    private CrowdMember harvey;
+    private int nextSkin, interval;
 
 
-    public Ep1AnimationView(Context context){
+    public Ep3AnimationView(Context context){
         super(context);
 
     }
-    public Ep1AnimationView(Context context, AttributeSet attrs) {
+    public Ep3AnimationView(Context context, AttributeSet attrs) {
         super(context, attrs);
         init(context);
     }
 
-    public Ep1AnimationView(Context context, AttributeSet attrs, int defStyle) {
+    public Ep3AnimationView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
         init(context);
     }
@@ -68,14 +70,15 @@ public class Ep1AnimationView extends View{
         yLoc = 0;
         first_time = true;
 
-        acceleration = .15F;
+
+        acceleration = .0030F;
         lastDrawTime = 0;
         total_elapsed = 0;
-        yVelocity = 0.600F;
-        xVelocity = 0.000F;
+        yVelocity = 0.000F;
+        xVelocity = 0.750F;
         direction_factor = 1;
 
-        this.context = (Ep1MainActivity) context;
+        this.context = (Ep3MainActivity) context;
     }
 
     private void initialize(){
@@ -91,19 +94,17 @@ public class Ep1AnimationView extends View{
         xPosition = (int)(.5 * MAX_WIDTH);
 
         score = 0;
-        skins = new Bitmap[6];
-        skins[0] = BitmapFactory.decodeResource(getResources(), R.drawable.line1);
-        skins[1] = BitmapFactory.decodeResource(getResources(), R.drawable.line2);
-        skins[2] = BitmapFactory.decodeResource(getResources(), R.drawable.line3);
-        skins[3] = BitmapFactory.decodeResource(getResources(), R.drawable.line4);
-        skins[4] = BitmapFactory.decodeResource(getResources(), R.drawable.line5);
-        skins[5] = BitmapFactory.decodeResource(getResources(), R.drawable.line6);
+        skins = new ArrayList<>();
+        skins.add(BitmapFactory.decodeResource(getResources(), R.drawable.can));
+        skins.add(BitmapFactory.decodeResource(getResources(), R.drawable.bush));
         recentlyIncreased = false;
 
         crowd = new ArrayList<>();
         toBeRemoved = new ArrayList<>();
-        //crowd.add(new CrowdMember(skins[0], 250));
+        //crowd.add(new CrowdMember(skins.get(0), -75, 1000 - skins.get(0).getHeight()));
         rand = new Random();
+        interval = 20 + rand.nextInt(4)*5;
+        harvey = new CrowdMember(BitmapFactory.decodeResource(getResources(), R.drawable.dog), 150, 950);
     }
 
     @Override
@@ -120,35 +121,31 @@ public class Ep1AnimationView extends View{
 
             if (elapsed > TIME_PER_FRAME) {
                 counter += 1;
-                System.out.println("xPOS: " + xPosition + " yPOS: " + yPosition + " Score: " + score + " Vel: " + yVelocity);
+                System.out.println("xPOS: " + harvey.xLocation + " yPOS: " + harvey.yLocation + " Score: " + score + " xVel: " + xVelocity + " yVel: " + yVelocity);
                 lastDrawTime = System.currentTimeMillis();
 
-                //makes every crowd member drop at velocity yVelocity
+                //updates Harvey for jumping
+                harvey.yLocation -= yVelocity * elapsed;
+                yVelocity -= acceleration * elapsed;
+                if(harvey.yLocation > 950){
+                    harvey.yLocation = 950;
+                }
+
+                //makes every crowd member move left at velocity xVelocity
                 for (CrowdMember c : crowd) {
-                    c.yLocation += yVelocity * elapsed;
+                    c.xLocation -= xVelocity * elapsed;
                 }
-                //spawns new crowd members based on player location
-                if (xPosition == 500 && counter % 20 == 0) { //gives first spawn a bit of buffer time
-                    crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 500));
-                    if (rand.nextInt(2) == 1)
-                        crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 250 + rand.nextInt(2)*500)); //adds other random CrowdMember in another row
-                }
-
-                if (xPosition == 250 && counter % 20 == 0) {
-                    crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 250));
-                    if (rand.nextInt(2) == 1)
-                        crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 500 + rand.nextInt(2) * 250)); //adds other random CrowdMember in another row
-                }
-
-                if (xPosition == 750 && counter % 20 == 0) {
-                    crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 750));
-                    if (rand.nextInt(2) == 1)
-                        crowd.add(new CrowdMember(skins[rand.nextInt(skins.length)], 250 + rand.nextInt(2)*250)); //adds other random CrowdMember in another row
+                //spawns new crowd members based on random clock
+                if (counter % interval == 0) {
+                    nextSkin = rand.nextInt(skins.size());
+                    crowd.add(new CrowdMember(skins.get(nextSkin), 1000, 1000 - skins.get(nextSkin).getHeight()));
+                    interval = 20 + rand.nextInt(4) * 5;
+                    counter = 0;
                 }
 
                 //increase difficulty as score increases
-                if (score % 10 == 0 && !recentlyIncreased) {
-                    yVelocity += .05;
+                if (score % 5 == 0 && !recentlyIncreased) {
+                    xVelocity += .05;
                     //prevents difficulty from increasing more than once per each score milestone
                     recentlyIncreased = true;
                 }
@@ -157,16 +154,15 @@ public class Ep1AnimationView extends View{
             yLoc = height_scale * yPosition;
             xLoc = width_scale * xPosition;
             drawScore(canvas);
-            drawHarvey(canvas);
+            drawCrowd(canvas, harvey);
             for (CrowdMember c : crowd) {
                 drawCrowd(canvas, c);
-                if (c.yLocation > 1050) {
+                if (c.xLocation < -150) {
                     toBeRemoved.add(c);
                 }
                 //collision detection
-                if (c.xLocation == xPosition && c.yLocation > (yPosition - (b.getHeight() / 2)) && c.yLocation < 950) {
+                if (harvey.yLocation == 950 && c.xLocation > (harvey.xLocation - (c.bitmap.getHeight() / 2)) && c.xLocation < (harvey.xLocation + (c.bitmap.getHeight() / 2))) {
                     gameOver = true;
-                    yVelocity = 0;
                     System.out.println("---------- COLLISION!!! -------------");
                     context.gotoGameOver(score);
                 }
@@ -177,19 +173,35 @@ public class Ep1AnimationView extends View{
                 crowd.remove(c);
             }
             toBeRemoved.clear();
-            //drawCircle(canvas);
+
+            //changes which obstacles spawn as game goes on
+            while (!spawnConditions[0] && score == 10){
+                skins.add(BitmapFactory.decodeResource(getResources(), R.drawable.can_can));
+                spawnConditions[0] = true;
+            }
+            while (!spawnConditions[1] && score == 20){
+                skins.add(BitmapFactory.decodeResource(getResources(), R.drawable.bush_can));
+                skins.add(BitmapFactory.decodeResource(getResources(), R.drawable.can_bush));
+                spawnConditions[1] = true;
+            }
+            while (!spawnConditions[2] && score == 30){
+                skins.add(BitmapFactory.decodeResource(getResources(), R.drawable.bush_bush));
+                skins.remove(0);
+                spawnConditions[2] = true;
+            }
+            while (!spawnConditions[3] && score == 40){
+                skins.remove(0);
+            }
+            while (!spawnConditions[4] && score == 50){
+                skins.remove(0);
+            }
+
             this.invalidate();
         }
     }
-    private void drawHarvey(Canvas canvas){
-        bm = BitmapFactory.decodeResource(getResources(), R.drawable.harvey);
-        b = Bitmap.createScaledBitmap(bm, bm.getWidth() * 3, bm.getHeight() * 3, true);
-        Paint harveyPaint = new Paint();
-        canvas.drawBitmap(b, xLoc - (b.getWidth() / 2), yLoc, harveyPaint);
-    }
     private void drawCrowd(Canvas canvas, CrowdMember member) {
         Paint crowdPaint = new Paint();
-        canvas.drawBitmap(member.bitmap, member.xLocation*width_scale - (member.bitmap.getWidth()/2), member.yLocation*height_scale, crowdPaint);
+        canvas.drawBitmap(member.bitmap, member.xLocation * width_scale - (member.bitmap.getWidth() / 2), member.yLocation * height_scale, crowdPaint);
     }
 
     private void drawCircle(Canvas canvas) {
@@ -225,4 +237,7 @@ public class Ep1AnimationView extends View{
     public Integer getScore() { return score; }
     public long getClock() { return System.currentTimeMillis(); }
     public Boolean getGameOver(){ return gameOver; }
+    public float getyVelocity(){ return yVelocity; }
+    public void setyVelocity(float f){ yVelocity = f; }
+    public float getHarveyyLocation() {return harvey.yLocation; }
 }
