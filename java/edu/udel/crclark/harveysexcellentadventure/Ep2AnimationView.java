@@ -81,8 +81,8 @@ public class Ep2AnimationView extends View {
         acceleration = .15F;
         lastDrawTime = 0;
         total_elapsed = 0;
-        yVelocity = 0.500F;
-        xVelocity = 0.500F;
+        yVelocity = 0.800F;
+        xVelocity = 0.800F;
         direction_factor = 1;
 
         this.context = (Ep2MainActivity) context;
@@ -215,8 +215,8 @@ public class Ep2AnimationView extends View {
                     if (xClick < c.xLocation + 70 && xClick > c.xLocation - 70 && yClick < c.yLocation + 100 && yClick > c.yLocation - 100) {
                         System.out.print("-----------SUCCESS------------");
                         score += 1;
-                        xVelocity += 0.075F;
-                        yVelocity += 0.075F;
+                        xVelocity += 0.100F;
+                        yVelocity += 0.100F;
                         toBeRemoved.add(c);
 
 
