@@ -116,7 +116,7 @@ public class Ep2AnimationView extends View {
         box = new ArrayList<>();
         toBeRemoved = new ArrayList<>();
         rand = new Random();
-        box.add(new Chalk(BitmapFactory.decodeResource(getResources(), R.drawable.chalk), rand.nextInt(1000), rand.nextInt(1000), xVelocity + (rand.nextInt(20) - 10)/1000, yVelocity + (rand.nextInt(20) - 10)/1000, 1, 1));
+        box.add(new Chalk(BitmapFactory.decodeResource(getResources(), R.drawable.chalk), rand.nextInt(850) + 75, rand.nextInt(875) + 25, xVelocity + (rand.nextInt(20) - 10)/1000, yVelocity + (rand.nextInt(20) - 10)/1000, 1, 1));
 
     }
 
@@ -140,32 +140,32 @@ public class Ep2AnimationView extends View {
                 //Chalk newChalk = new Chalk(BitmapFactory.decodeResource(getResources(), R.drawable.chalk), rand.nextInt(1000), rand.nextInt(1000), xVelocity, yVelocity);
 
                 if (box.size() == 0 && counter % 30 == 0)
-                    box.add(new Chalk(BitmapFactory.decodeResource(getResources(), R.drawable.chalk), rand.nextInt(1000), rand.nextInt(1000), xVelocity + (rand.nextInt(20) - 10)/1000, yVelocity + (rand.nextInt(20) - 10)/1000));
+                    box.add(new Chalk(BitmapFactory.decodeResource(getResources(), R.drawable.chalk), rand.nextInt(850) + 75, rand.nextInt(875) + 25, xVelocity + (rand.nextInt(20) - 10)/1000, yVelocity + (rand.nextInt(20) - 10)/1000));
 
                 for (Chalk c : box){
 
                     c.xLocation += xVelocity * elapsed;
                     c.yLocation += yVelocity * elapsed;
 
-                    if (c.xLocation > 950 && c.xDirection == 1){
+                    if (c.xLocation > 925 && c.xDirection == 1){
                         xVelocity = xVelocity * -1;
                         c.xDirection = -1;
                         c.bounce += 1;
                     }
 
-                    else if (c.xLocation < 50 && c.xDirection == -1){
+                    else if (c.xLocation < 75 && c.xDirection == -1){
                         xVelocity = xVelocity * -1;
                         c.xDirection = 1;
                         c.bounce += 1;
                     }
 
-                    if (c.yLocation > 950 && c.yDirection == 1){
+                    if (c.yLocation > 900 && c.yDirection == 1){
                         yVelocity = yVelocity * -1;
                         c.yDirection = -1;
                         c.bounce += 1;
                     }
 
-                    else if(c.yLocation < 50 && c.yDirection == -1){
+                    else if(c.yLocation < 25 && c.yDirection == -1){
                         yVelocity = yVelocity * -1;
                         c.yDirection = 1;
                         c.bounce += 1;
