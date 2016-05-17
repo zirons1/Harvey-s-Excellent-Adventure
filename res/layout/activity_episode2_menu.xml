@@ -17,4 +17,23 @@
         android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:id="@+id/button7"
+        android:onClick="gotoEp2MainActivity"
+        android:layout_centerVertical="true"
+        android:layout_alignEnd="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginTop="58dp"
+        android:text="Harvey's in the middle of class and is losing his mind! \nHelp him catch the escaping chalk!"
+        android:id="@+id/textView4"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
