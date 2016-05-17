@@ -147,25 +147,25 @@ public class Ep2AnimationView extends View {
                     c.xLocation += xVelocity * elapsed;
                     c.yLocation += yVelocity * elapsed;
 
-                    if (c.xLocation > 975 && c.xDirection == 1){
+                    if (c.xLocation > 950 && c.xDirection == 1){
                         xVelocity = xVelocity * -1;
                         c.xDirection = -1;
                         c.bounce += 1;
                     }
 
-                    else if (c.xLocation < 25 && c.xDirection == -1){
+                    else if (c.xLocation < 50 && c.xDirection == -1){
                         xVelocity = xVelocity * -1;
                         c.xDirection = 1;
                         c.bounce += 1;
                     }
 
-                    if (c.yLocation > 975 && c.yDirection == 1){
+                    if (c.yLocation > 950 && c.yDirection == 1){
                         yVelocity = yVelocity * -1;
                         c.yDirection = -1;
                         c.bounce += 1;
                     }
 
-                    else if(c.yLocation < 25 && c.yDirection == -1){
+                    else if(c.yLocation < 50 && c.yDirection == -1){
                         yVelocity = yVelocity * -1;
                         c.yDirection = 1;
                         c.bounce += 1;
@@ -202,7 +202,6 @@ public class Ep2AnimationView extends View {
             }
             yLoc = height_scale * yPosition;
             xLoc = width_scale * xPosition;
-            drawScore(canvas);
             //drawHarvey(canvas);
 
             //System.out.println(context.getClickLoc()[0] + ", " + context.getClickLoc()[1]);
@@ -213,7 +212,7 @@ public class Ep2AnimationView extends View {
 
                 if (xChange != xClick || yChange != yClick){
                     System.out.println("X: " + xClick + "   Y: " + yClick);
-                    if (xClick < c.xLocation + 35 && xClick > c.xLocation - 35 && yClick < c.yLocation + 50 && yClick > c.yLocation - 50) {
+                    if (xClick < c.xLocation + 70 && xClick > c.xLocation - 70 && yClick < c.yLocation + 100 && yClick > c.yLocation - 100) {
                         System.out.print("-----------SUCCESS------------");
                         score += 1;
                         xVelocity += 0.075F;
@@ -245,6 +244,8 @@ public class Ep2AnimationView extends View {
                  context.gotoGameOver(score);
                  }**/
             }
+
+            drawScore(canvas);
 
             for (Chalk c : toBeRemoved) {
                 //score += 1;
