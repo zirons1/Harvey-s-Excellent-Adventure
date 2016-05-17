@@ -8,7 +8,7 @@ public class Chalk {
     int xDirection, yDirection, bounce;
 
     Chalk(Bitmap b, float xLocation, float yLocation, float xVelocity, float yVelocity, int xDirection, int yDirection){
-        bitmap = Bitmap.createScaledBitmap(b, b.getWidth()*4, b.getHeight()*4, true);
+        bitmap = Bitmap.createScaledBitmap(b, b.getWidth()*3, b.getHeight()*3, true);
         this.xLocation = xLocation;
         this.yLocation = yLocation;
         this.xVelocity = xVelocity;
@@ -19,7 +19,7 @@ public class Chalk {
     }
 
     Chalk(Bitmap b, float xLocation, float yLocation, float xVelocity, float yVelocity){
-        bitmap = Bitmap.createScaledBitmap(b, b.getWidth()*4, b.getHeight()*4, true);
+        bitmap = Bitmap.createScaledBitmap(b, b.getWidth()*3, b.getHeight()*3, true);
         this.xLocation = xLocation;
         this.yLocation = yLocation;
         this.xVelocity = xVelocity;
