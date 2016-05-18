@@ -192,9 +192,11 @@ public class Ep3AnimationView extends View{
             }
             while (!spawnConditions[3] && score == 40){
                 skins.remove(0);
+                spawnConditions[3] = true;
             }
             while (!spawnConditions[4] && score == 50){
                 skins.remove(0);
+                spawnConditions[4] = true;
             }
 
             this.invalidate();
